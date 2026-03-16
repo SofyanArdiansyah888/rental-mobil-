@@ -350,6 +350,9 @@ if (isset($_SESSION['pelanggan'])) {
                     </div>
                     <div class="info">
                         <h3 class="nama-mobil"><?= htmlspecialchars($row['nama_mobil']); ?></h3>
+                        <div class="harga"> 
+                            Rp <?= number_format($row['harga_sewa_per_hari'], 0, ',', '.'); ?> / Hari
+                        </div>
                         <?php if ($row['status'] === 'Tersedia') { ?>
                             <a href="detailmobil.php?id=<?= $row['id']; ?>" class="btn-order">Pesan Sekarang</a>
                         <?php } else { ?>

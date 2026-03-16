@@ -158,7 +158,7 @@ if (isset($_SESSION['pelanggan'])) {
     <div class="spec-item">
         <i class="fa-solid fa-shield-alt"></i>
            <div>
-          <p>Asuransi</p>
+          <p  class="spec-title">Asuransi</p>
           <span><?= $data['asuransi'] ?? 'YES'; ?></span>
         </div>
     </div>
@@ -166,7 +166,7 @@ if (isset($_SESSION['pelanggan'])) {
     <div class="spec-item">
         <i class="fa-solid fa-user-tie"></i>
         <div>
-          <p>Pengemudi</p>
+          <p  class="spec-title">Pengemudi</p>
               <span><?= $data['pengemudi'] ?? 'YES'; ?></span>
         </div>
     </div>

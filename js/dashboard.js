@@ -365,54 +365,84 @@ const tanggalSelesai = document.getElementById("tanggal_selesai");
 const durasiInput = document.getElementById("durasi");
 const totalBiaya = document.getElementById("totalBiaya");
 
-let hargaSewa = 0;
+// Hanya aktifkan fitur modal jika semua elemen tersedia (mis. di halaman daftar mobil)
+if (
+  modal &&
+  closeBtn &&
+  mobilGambar &&
+  mobilNama &&
+  mobilHarga &&
+  tanggalMulai && 
+  tanggalSelesai &&
+  durasiInput &&
+  totalBiaya
+) {
+  let hargaSewa = 0;
 
-// Tombol "Pesan Sekarang"
-document.querySelectorAll(".btn-order").forEach(btn => {
-  btn.addEventListener("click", (e) => {
-    e.preventDefault();
+  // Tombol "Pesan Sekarang"
+  document.querySelectorAll(".btn-order").forEach(btn => {
+    btn.addEventListener("click", (e) => {
+      e.preventDefault();
 
-    const card = e.target.closest(".card-mobil");
-    const nama = card.querySelector(".nama-mobil").innerText;
-    const hargaText = card.querySelector(".harga").innerText;
-    const gambar = card.querySelector("img").src;
+      const card = e.target.closest(".card-mobil");
+      if (!card) {
+        console.error("Tidak menemukan .card-mobil untuk tombol ini");
+        return;
+      }
 
-    mobilNama.innerText = nama;
-    mobilGambar.src = gambar;
-    mobilHarga.innerText = hargaText;
-    hargaSewa = parseInt(hargaText.replace(/[^\d]/g, "")) * 1000;
+      const namaEl = card.querySelector(".nama-mobil");
+      const hargaEl = card.querySelector(".harga");
+      const imgEl = card.querySelector("img");
 
-    modal.style.display = "flex";
+      if (!namaEl || !hargaEl || !imgEl) {
+        console.error("Elemen nama/harga/gambar tidak lengkap di dalam .card-mobil");
+        return;
+      }
+
+      const nama = namaEl.innerText;
+      const hargaText = hargaEl.innerText;
+      const gambar = imgEl.src;
+
+      mobilNama.innerText = nama;
+      mobilGambar.src = gambar;
+      mobilHarga.innerText = hargaText;
+      hargaSewa = parseInt(hargaText.replace(/[^\d]/g, "")) * 1000;
+
+      modal.style.display = "flex";
+    });
   });
-});
 
-// Tutup Modal
-closeBtn.addEventListener("click", () => {
-  modal.style.display = "none";
-});
-window.addEventListener("click", (e) => {
-  if (e.target === modal) modal.style.display = "none";
-});
+  // Tutup Modal
+  closeBtn.addEventListener("click", () => {
+    modal.style.display = "none";
+  });
+  window.addEventListener("click", (e) => {
+    if (e.target === modal) modal.style.display = "none";
+  });
 
-// Hitung Durasi dan Total Otomatis
-function hitungDurasi() {
-  const mulai = new Date(tanggalMulai.value);
-  const selesai = new Date(tanggalSelesai.value);
-  if (mulai && selesai && selesai > mulai) {
-    const diff = (selesai - mulai) / (1000 * 60 * 60 * 24);
-    durasiInput.value = diff + " Hari";
-    totalBiaya.value = "Rp " + (diff * hargaSewa).toLocaleString();
-  } else {
-    durasiInput.value = "";
-    totalBiaya.value = "";
+  // Hitung Durasi dan Total Otomatis
+  function hitungDurasi() {
+    const mulai = new Date(tanggalMulai.value);
+    const selesai = new Date(tanggalSelesai.value);
+    if (mulai && selesai && selesai > mulai) {
+      const diff = (selesai - mulai) / (1000 * 60 * 60 * 24);
+      durasiInput.value = diff + " Hari";
+      totalBiaya.value = "Rp " + (diff * hargaSewa).toLocaleString();
+    } else {
+      durasiInput.value = "";
+      totalBiaya.value = "";
+    }
+  }
+  tanggalMulai.addEventListener("change", hitungDurasi);
+  tanggalSelesai.addEventListener("change", hitungDurasi);
+
+  // Submit Form
+  const formPesan = document.getElementById("formPesan");
+  if (formPesan) {
+    formPesan.addEventListener("submit", function(e) {
+      e.preventDefault();
+      alert("Pesanan berhasil dikirim!");
+      modal.style.display = "none";
+    });
   }
 }
-tanggalMulai.addEventListener("change", hitungDurasi);
-tanggalSelesai.addEventListener("change", hitungDurasi);
-
-// Submit Form
-document.getElementById("formPesan").addEventListener("submit", function(e) {
-  e.preventDefault();
-  alert("Pesanan berhasil dikirim!");
-  modal.style.display = "none";
-});

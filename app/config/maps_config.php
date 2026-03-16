@@ -30,6 +30,4 @@ define('GOOGLE_MAPS_API_KEY', $apiKey);
 // API Configuration
 define('MAPS_DEFAULT_LAT', -5.1477); // Default latitude (Makassar)
 define('MAPS_DEFAULT_LNG', 119.4327); // Default longitude (Makassar)
-define('MAPS_DEFAULT_ZOOM', 13); // Default zoom level
-?>
-
+define('MAPS_DEFAULT_ZOOM', 13); // Default zoom level 
